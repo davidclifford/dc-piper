@@ -1,0 +1,84 @@
+Control signals for Pipelined CPU.
+[RESET] is not from control unit but from reset circuit
+
+Address bus registers
+---------------------
+
+PC: Program counter
+PC_INC - active low to count
+PC_LOAD(JUMP)  - active low to load from T register (MSB)and databus (LSB)
+PC_ASSERT(~MAR_ASSERT?)  - active low, assert PC to address bus, could be inverse of MAR_ASSERT or from MUX/DECODE
+T_LOAD (from databus)
+[PC_RESET]
+
+MR: Memory address register
+MR_LOAD_HI (from data bus)
+MR_LOAD_LOW (from data bus)
+MR_ASSERT(~PC_ASSERT)
+
+(SP): Stack pointer (TBA)
+SP_LOAD_HI (from databus OR MAR?)
+SP_LOAD_LO (from databus OR MAR?) if from MAR can load 2 bytes in one clock cycle but uses MAR (shouldn't be a problem)
+SP_INC
+SP_DEC
+SP_ASSERT ( to address bus)
+
+(RA): Return address register
+RA_LOAD (from PC)
+RA_ASSERT_HI (to databus, load into T register)
+RA_ASSERT_LO (to databus, load into PC)
+
+Memory Bus
+----------
+
+MEM_WRITE  - store data to memory from MEM_TRANSFER register
+MEM_TRANSFER_ASSERT (from data to memory bus or from memory to data bus)
+MEM_TRANSFER_DIR (direction of memory transfer)
+MEM_ASSERT - assert data from memory onto memory bus
+CONSTANT_LOAD (from memory bus)
+PL_LOAD - pipeline stage 0, (from memory bus)
+
+Data bus
+-------------
+CONSTANT_ASSERT (to data bus)
+ALU_ASSERT (to data bus)
+
+FLAGS_LOAD (from alu upper 4-bits)
+ALU_LOAD (from ALU lower 8-bits (same as FLAGS_LOAD??))
+ALU_FUNCTION (5 bits, 32 functions)
+
+A_LOAD (from databus)
+B_LOAD (from databus)
+C_LOAD (from databus)
+D_LOAD (from databus)
+
+AB_CD (low = AB, high = CD, assert to ALU inputs)
+
+
+Control Unit
+------------
+
+Input:
+8-bits of instruction from pipline stage
+6-bits of flags
+    CVNZ carry, overflow, negative and zero, from flags register
+    IO   input ready, output ready from I/O (UM245R)
+
+Output:
+16-bits from each pipeline stage P1 and P2
+
+Pipeline
+--------
+[RESET] ( using 74HC273 chips)
+Pipeline P0 inject NOP on BUS_REQ or FETCH_SUPP (load constant)
+Inhibit PC_INC on BUS_REQ
+
+Constant Load  - FETCH_SUP from P1 - inject NOP in pipeline, DO   incr PC
+Read/Write Mem - BUS_REQ   from P2 - inject NOP in pipeline, DONT incr PC
+BUS_REQ and FETCH_SUP at same time, output previous instruction from latch (see JS videos 65 and 72)
+
+
+
+
+
+

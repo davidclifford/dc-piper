@@ -1,0 +1,133 @@
+Version 1
+---------
+
+A = LHS (8-BITS)
+B = RHS (8-BITS)
+C = Carry (1-BIT)
+OP = 4-BITS
+----------------
+8+8+1+4 = 21 BITS
+
+Output
+------
+8-bits Result
+4-bits Flags NVCZ
+
+Ops
+-----
+00: 0+C
+01: A+B+C
+02: A-B-C
+03: A+C
+04: B+C
+05: A-C
+06: B-C
+07: A*B LO
+08: A*B HO
+09: A/B
+10: A%B
+11: A&B
+12: A|B
+13: A^B
+14: AB DIV 10
+15: AB REM 10
+
+
+Version 2
+---------
+
+A = LHS (8-BITS)
+B = RHS (8-BITS)
+OP = 32 (5-BITS)
+----------------
+8+8+5 = 21 BITS
+
+Output
+------
+8-bits Result
+4-bits Flags NVCZ
+
+Ops
+-----
+00: 0
+01: A
+02: B
+03: -A
+04: -B
+05: A+1
+06: B+1
+07: A-1
+08: B-1
+09: A+B
+10: A+B+1
+11: A-B
+12: A-B-1
+13: B-A
+14: B-A-1
+15: A*B LO
+16: A*B HI
+17: A/B
+18: A%B
+19: A<<B
+20: A>>B
+21: A->B
+22: A ROL B
+23: A ROR B
+24: A&B
+25: A|B
+26: A^B
+27: !A
+28: !B
+29: SHL A
+30: AB DIV 10
+31: AB REM 10
+
+Version 3
+---------
+
+A = LHS (8-BITS)
+B = RHS (8-BITS)
+OP = 32 (5-BITS)
+----------------
+8+8+5 = 21 BITS
+
+Output
+------
+16-bits Result
+or
+8-bits result + 4-bits Flags NVCZ
+
+Ops
+-----
+00: 0       flags
+01: A+B     flags
+02: A+B+1   flags
+03: A-B     flags
+04: A-B-1   flags
+05: B-A     flags
+06: B-A-1   flags
+07: A+1     flags
+08: B+1     flags
+09: A-1     flags
+10: B-1     flags
+11: A       NZ flag
+12: B       NZ flag
+13: A*B     (16-bit result)
+14: A/B     A%B
+15: A<<B    (16-bit result)
+16: A>>B    A->B    (Logical and arithmetic shift right)
+17: A ROL B A ROR B
+18: A&B     $FF
+19: A|B     A^B
+20: A/10    A%10    (with B as remainder from before)
+21: -A      -B
+22: !A      !B
+23:
+24:
+25:
+26:
+27:
+28:
+29:
+30:
+31:
